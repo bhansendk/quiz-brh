@@ -4,47 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VM i Fodbold Quiz</title>
-    <script>
-        (function() {
-            var ua = navigator.userAgent || '';
-            var ref = (document.referrer || '').toLowerCase();
-            var search = (window.location.search || '').toLowerCase();
 
-            function detectInAppBrowser() {
-                var viaUserAgent = /FBAN|FBAV|FB_IAB|FBIOS|FB4A|MESSENGER|INSTAGRAM|MICROMESSENGER|LINE\//i.test(ua);
-                var viaReferrer = /facebook\.com|messenger\.com|instagram\.com|l\.facebook\.com|lm\.facebook\.com/.test(ref);
-                var forcedGuide = /[?&]guide=1(?:&|$)/.test(search);
-                return viaUserAgent || viaReferrer || forcedGuide;
-            }
-
-            function renderInAppGuide() {
-                var isAndroid = /android/i.test(ua);
-                var steps = isAndroid
-                    ? '<li>Tryk pa de tre prikker (menu) oppe til hojre.</li><li>Vaelg "Abn i browser" eller "Abn i Chrome".</li><li>Nar siden abner i Chrome, virker quizzen normalt.</li>'
-                    : '<li>Tryk pa de tre prikker (menu).</li><li>Vaelg "Abn i Safari".</li><li>Nar siden abner i Safari, virker quizzen normalt.</li>';
-
-                document.body.innerHTML = ''
-                    + '<div style="min-height:100dvh;display:flex;align-items:flex-start;justify-content:center;padding:14px 12px calc(18px + env(safe-area-inset-bottom)) 12px;background:linear-gradient(135deg,#1f2937 0%, #111827 100%);font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;overflow:auto;">'
-                    + '  <div style="width:min(100%,520px);background:#ffffff;border-radius:14px;padding:16px 14px;box-shadow:0 20px 60px rgba(0,0,0,0.35);margin-top:max(8px,env(safe-area-inset-top));">'
-                    + '    <h1 style="font-size:clamp(1.15rem,5.2vw,1.4rem);color:#111827;margin-bottom:10px;line-height:1.25;">Abn quizzen i din browser</h1>'
-                    + '    <p style="color:#4b5563;line-height:1.6;margin-bottom:14px;font-size:0.98rem;">Messenger/Facebook blokerer ofte knapper i lokale eller indlejrede sider. Brug din normale browser for at spille quizzen.</p>'
-                    + '    <ol style="margin:0 0 16px 18px;color:#1f2937;line-height:1.75;font-size:0.97rem;">'
-                    +          steps
-                    + '    </ol>'
-                    + '    <div style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;border-radius:10px;padding:10px 12px;font-size:0.92rem;line-height:1.5;">Tip: Del helst GitHub Pages-linket. Sa virker den direkte hos modtageren.</div>'
-                    + '    <div style="margin-top:14px;display:grid;grid-template-columns:1fr;gap:9px;">'
-                    + '      <button onclick="window.location.reload()" style="width:100%;border:0;border-radius:10px;padding:12px 14px;background:#2563eb;color:#fff;font-weight:700;cursor:pointer;font-size:1rem;">Jeg har abnet i browser</button>'
-                    + '      <button onclick="window.location.href = window.location.pathname" style="width:100%;border:2px solid #cbd5e1;border-radius:10px;padding:12px 14px;background:#fff;color:#334155;font-weight:700;cursor:pointer;font-size:1rem;">Forsog alligevel her</button>'
-                    + '    </div>'
-                    + '  </div>'
-                    + '</div>';
-            }
-
-            if (detectInAppBrowser()) {
-                document.addEventListener('DOMContentLoaded', renderInAppGuide);
-            }
-        })();
-    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -741,7 +701,7 @@ const quizData = {
         { q: "Hvilke to hold mødte hinanden ved 'The Battle of Nuremberg' ved VM i 2006?", a: ["Holland og Portugal", "Portugal og Holland", "Holland", "Portugal"] },
         { q: "Hvem scorede for Nigeria mod Danmark ved VM i 1998?", a: ["Tijani Babangida", "Babangida"] },
         { q: "Hvem scorede for Spanien mod Tyskland i semifinalen ved VM 2010?", a: ["Puyol", "Carles Puyol"] },
-        { q: "Hvilket år var England, Scotland, Wales og Nordirland (UK) alle med til VM?", a: ["1954"] },
+        { q: "Hvilket år var England, Scotland, Wales og Nordirland (UK) alle med til VM?", a: ["1958"] },
         { q: "Hvilken forsvarsspiller scorede både i ottendedels- og kvartfinalen ved VM i 2014 for Brasilien?", a: ["David Luiz", "Luiz"] },
     ],
 };
