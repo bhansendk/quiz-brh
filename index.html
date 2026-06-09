@@ -7,61 +7,42 @@
     <script>
         (function() {
             var ua = navigator.userAgent || '';
-            // Bred detektion: Facebook, Messenger, Instagram, WeChat, Twitter, LinkedIn in-app browsere
-            var isInApp = /FBAN|FBAV|FB_IAB|FBIOS|FB4A|Messenger|Instagram|Twitter|LinkedInApp|MicroMessenger|Line\/|KAKAOTALK|Snapchat/i.test(ua)
-                || /\bFB\b/.test(ua)
-                || (typeof window !== 'undefined' && (window.FB !== undefined));
+            var ref = (document.referrer || '').toLowerCase();
+            var search = (window.location.search || '').toLowerCase();
 
-            // Fallback: check for known Facebook in-app browser quirks
-            if (!isInApp) {
-                try {
-                    isInApp = !window.history || !window.history.pushState;
-                } catch(e) {}
+            function detectInAppBrowser() {
+                var viaUserAgent = /FBAN|FBAV|FB_IAB|FBIOS|FB4A|MESSENGER|INSTAGRAM|MICROMESSENGER|LINE\//i.test(ua);
+                var viaReferrer = /facebook\.com|messenger\.com|instagram\.com|l\.facebook\.com|lm\.facebook\.com/.test(ref);
+                var forcedGuide = /[?&]guide=1(?:&|$)/.test(search);
+                return viaUserAgent || viaReferrer || forcedGuide;
             }
 
-            function showOverlay() {
+            function renderInAppGuide() {
                 var isAndroid = /android/i.test(ua);
-                var overlay = document.createElement('div');
-                overlay.id = 'inapp-overlay';
-                overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;';
-                var box = document.createElement('div');
-                box.style.cssText = 'background:white;border-radius:16px;padding:28px 24px;max-width:360px;width:100%;text-align:center;font-family:sans-serif;';
                 var steps = isAndroid
-                    ? '<li>Tryk på <strong>⋮</strong> (tre prikker) øverst</li><li>Vælg <strong>"Åbn i Chrome"</strong> eller <strong>"Åbn i browser"</strong></li>'
-                    : '<li>Tryk på <strong>···</strong> (tre prikker) nederst</li><li>Vælg <strong>"Åbn i Safari"</strong></li>';
-                box.innerHTML = '<div style="font-size:2.5em;margin-bottom:12px;">⚽</div>'
-                    + '<h2 style="color:#333;margin-bottom:10px;font-size:1.2em;">Åbn i din browser</h2>'
-                    + '<p style="color:#555;margin-bottom:16px;font-size:0.95em;">Quizzen virker ikke i Messenger/Facebook. Følg disse trin:</p>'
-                    + '<ol style="text-align:left;color:#333;font-size:0.95em;line-height:1.9;padding-left:20px;margin-bottom:20px;">'
-                    + steps
-                    + '</ol>'
-                    + '<p style="color:#888;font-size:0.8em;">Quizzen åbner herefter korrekt ✓</p>';
-                overlay.appendChild(box);
-                if (document.body) {
-                    document.body.appendChild(overlay);
-                } else {
-                    document.addEventListener('DOMContentLoaded', function() {
-                        document.body.appendChild(overlay);
-                    });
-                }
+                    ? '<li>Tryk pa de tre prikker (menu) oppe til hojre.</li><li>Vaelg "Abn i browser" eller "Abn i Chrome".</li><li>Nar siden abner i Chrome, virker quizzen normalt.</li>'
+                    : '<li>Tryk pa de tre prikker (menu).</li><li>Vaelg "Abn i Safari".</li><li>Nar siden abner i Safari, virker quizzen normalt.</li>';
+
+                document.body.innerHTML = ''
+                    + '<div style="min-height:100dvh;display:flex;align-items:flex-start;justify-content:center;padding:14px 12px calc(18px + env(safe-area-inset-bottom)) 12px;background:linear-gradient(135deg,#1f2937 0%, #111827 100%);font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;overflow:auto;">'
+                    + '  <div style="width:min(100%,520px);background:#ffffff;border-radius:14px;padding:16px 14px;box-shadow:0 20px 60px rgba(0,0,0,0.35);margin-top:max(8px,env(safe-area-inset-top));">'
+                    + '    <h1 style="font-size:clamp(1.15rem,5.2vw,1.4rem);color:#111827;margin-bottom:10px;line-height:1.25;">Abn quizzen i din browser</h1>'
+                    + '    <p style="color:#4b5563;line-height:1.6;margin-bottom:14px;font-size:0.98rem;">Messenger/Facebook blokerer ofte knapper i lokale eller indlejrede sider. Brug din normale browser for at spille quizzen.</p>'
+                    + '    <ol style="margin:0 0 16px 18px;color:#1f2937;line-height:1.75;font-size:0.97rem;">'
+                    +          steps
+                    + '    </ol>'
+                    + '    <div style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;border-radius:10px;padding:10px 12px;font-size:0.92rem;line-height:1.5;">Tip: Del helst GitHub Pages-linket. Sa virker den direkte hos modtageren.</div>'
+                    + '    <div style="margin-top:14px;display:grid;grid-template-columns:1fr;gap:9px;">'
+                    + '      <button onclick="window.location.reload()" style="width:100%;border:0;border-radius:10px;padding:12px 14px;background:#2563eb;color:#fff;font-weight:700;cursor:pointer;font-size:1rem;">Jeg har abnet i browser</button>'
+                    + '      <button onclick="window.location.href = window.location.pathname" style="width:100%;border:2px solid #cbd5e1;border-radius:10px;padding:12px 14px;background:#fff;color:#334155;font-weight:700;cursor:pointer;font-size:1rem;">Forsog alligevel her</button>'
+                    + '    </div>'
+                    + '  </div>'
+                    + '</div>';
             }
 
-            if (isInApp) {
-                showOverlay();
+            if (detectInAppBrowser()) {
+                document.addEventListener('DOMContentLoaded', renderInAppGuide);
             }
-
-            // Altid vis en lille "åbn i browser"-knap øverst som backup
-            document.addEventListener('DOMContentLoaded', function() {
-                if (isInApp) return; // overlay vises allerede
-                // Vis diskret banner til alle mobil-brugere
-                var isMobile = /Mobi|Android|iPhone|iPad/i.test(ua);
-                if (isMobile) {
-                    var banner = document.createElement('div');
-                    banner.style.cssText = 'background:#fff3cd;color:#856404;padding:10px 16px;text-align:center;font-size:0.85em;font-family:sans-serif;position:sticky;top:0;z-index:1000;border-bottom:1px solid #ffc107;';
-                    banner.innerHTML = '⚠️ Virker quizzen ikke? <strong>Åbn i Chrome eller Safari</strong>';
-                    document.body.insertBefore(banner, document.body.firstChild);
-                }
-            });
         })();
     </script>
     <style>
