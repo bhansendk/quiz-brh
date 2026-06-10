@@ -437,6 +437,7 @@ function checkAnswerMatch(userAnswer, acceptedAnswers) {
 }
 
 function getQuestionMaxPoints(question) {
+    if (question && question.roundBreak) return 0;
     if (question && typeof question.maxPoints === 'number') return question.maxPoints;
     if (question && question.multiPoint && Array.isArray(question.a)) return question.a.length;
     return 1;
@@ -658,51 +659,60 @@ const quizData = {
         { q: "Hvad er rekorden for flest mål i en enkelt VM-kamp - sat af Ungarn mod El Salvador i 1982?", a: ["10-1"] },
     ],
     quizforliv: [
-        { q: "Guilermo Stabile blev topscorer ved VM 1930, hvilket land var han fra?", a: ["Argentina"] },
-        { q: "Der var tre danskere med ved VM 2002, som spillede i PSV på daværende tidspunkt - hvem?", a: ["Dennis Rommedahl", "Jan Heinze", "Kasper Bøgelund", "Kasper Bogelund"], multiPoint: true, maxPoints: 3 },
-        { q: "Hvilket stadion fik Danmark sin VM debut på i VM 1986?", a: ["Estadio Neza 86", "Nezahualcóyotl", "Nezahualcoyotl", "Neza 86", "Neza"] },
-        { q: "Hvem var Brasiliens landstræner i 2002?", a: ["Luiz Felipe Scolari", "Scolari"] },
-        { q: "Der var 16 hold med til VM i 1934 - hvor mange var med uden for Europa; 2, 4 eller 6?", a: ["4"] },
-        { q: "Hvem blev bedste unge spiller ved VM i 2018?", a: ["Kylian Mbappe"] },
-        { q: "Hvem var den første værtsnation som ikke gik videre fra gruppen?", a: ["Sydafrika", "South Africa"] },
-        { q: "Hvilket år dømte Pierluigi Colina VM-finalen?", a: ["VM 2002", "2002"] },
-        { q: "Ved VM 1962 spillede Colombia og Soviet Unionen 4-4. Marcos Coll scorede til 4-2, og der var noget særligt ved scoringen - hvad?", a: ["hjørnespark", "direkte på hjørnespark", "direkte fra hjørnespark"] },
-        { q: "Hvilken af følgende var ikke med i Tysklands trup ved VM 2006; Oliver Kahn, Robert Huth eller Jens Jeremies?", a: ["Jens Jeremies"] },
-        { q: "Hvilket årti fik England VM debut?", a: ["1950erne", "1950"] },
-        { q: "Hvilke tre bogstaver står på Brasiliens logo?", a: ["CBF"] },
-        { q: "Hvor blev VM i 1954 afholdt?", a: ["Schweiz"] },
-        { q: "Hvem er jeg: født 13. februar 1979, spillede 147 landskampe fra 1997-2018 og scorede 3 VM-mål (2006 mod Argentina, 2010 mod Sydafrika og 2014 mod Kroatien)?", a: ["Rafael Marquez", "Marquez"] },
-        { q: "Nævn 3 af de 4 topscorere ved VM 2010.", a: ["David Villa", "Wesley Sneijder", "Thomas Müller", "Thomas Muller", "Diego Forlan", "Diego Forlán"], multiPoint: true, maxPoints: 3 },
-        { q: "6 gange er den forsvarende verdensmester slået ud tidligt - ud over Tyskland, Spanien, Italien og Brasilien, hvem er den femte nation?", a: ["Frankrig", "France"] },
-        { q: "To spillere har scoret hattrick i VM-finaler - hvem?", a: ["Geoff Hurst", "Kylian Mbappe", "Kylian Mbappé"], multiPoint: true, maxPoints: 2 },
-        { q: "Hvilket af følgende hold har aldrig været til VM; Slovenien, Kuwait eller Zambia?", a: ["Zambia"] },
-        { q: "Hvilken VM slutrunde var den første med 32 hold?", a: ["1998"] },
-        { q: "Hvilket hold vandt Argentina over i VM-finalen i 1978?", a: ["Holland", "Nederlandene"] },
-        { q: "Hvem var Argentinas træner til VM i 1986?", a: ["Carlos Bilardo", "Bilardo"] },
-        { q: "Hvilken hollænder scorede 4 mål ved VM i 2014?", a: ["Robin van Persie", "van Persie", "Van Persie"] },
-        { q: "Hvilket land, der har deltaget i alt 2 gange ved VM, fik bronze sidste de stillede op?", a: ["Tyrkiet", "Turkey"] },
-        { q: "Jordan og Curacao er debutanter ved VM 2026, hvem er de to andre?", a: ["Uzbekistan", "Kap Verde"], multiPoint: true, maxPoints: 2 },
-        { q: "På hvilket stadion blev VM-finalen afholdt i 1990?", a: ["Stadio Olimpico", "Rom", "Roma"] },
-        { q: "Hvem er den ældste spiller til at vinde VM?", a: ["Dino Zoff", "Zoff"] },
-        { q: "Hvor mange point fik Qatar til VM i 2022?", a: ["0"] },
-        { q: "En engelsk klub havde to danskere med i truppen til VM i 2018 - hvilken?", a: ["Huddersfield"] },
-        { q: "Hvem var anfører for Italien ved VM 1970?", a: ["Giacinto Facchetti", "Facchetti"] },
-        { q: "Hvilken russer scorede 4 mål ved VM i 2018 og har spillet for Villarreal?", a: ["Dennis Cheryshev", "Cheryshev"] },
-        { q: "Hvilket år var kvartfinalerne: Irland-Italien, Tjekkoslovakiet-Vesttyskland, Cameroon-England og Argentina-Yugoslavia?", a: ["1990"] },
-        { q: "Hvem er all time VM-topscorer for Sverige?", a: ["Kenneth Andersson", "Henrik Larsson", "Henke Larsson"], multiPoint: true, maxPoints: 2 },
-        { q: "Hvem var træner for Tyskland ved VM 2022?", a: ["Hansi Flick", "Flick"] },
-        { q: "På hvilket stadion blev finalen i 1994 afholdt?", a: ["Rose Bowl", "Pasadena", "Rose Bowl Pasadena"] },
-        { q: "Nævn tre ud af 11 spillere som startede for Holland i VM-finalen 1974.", a: ["Jan Jongbloed", "Wim Suurbier", "Wim Rijsbergen", "Arie Haan", "Ruud Krol", "Wim Jansen", "Johan Neeskens", "Willem van Hanegem", "Johnny Rep", "Johan Cruyff", "Rob Rensenbrink"], multiPoint: true, maxPoints: 3 },
-        { q: "Hvem fik debut som selvstændig nation ved VM i 2010 og det stadig er deres eneste deltagelse?", a: ["Slovakiet", "Slovakia"] },
-        { q: "Hvem blev Italiens topscorer ved VM i 1938 med 5 mål?", a: ["Silvio Piola", "Piola"] },
-        { q: "Hvilken nation spillede Mustapha Hadji for ved VM i 1998?", a: ["Marokko", "Morocco"] },
-        { q: "To målmænd har flest clean sheets ved VM nogensinde, en englænder og en franskmand - hvem?", a: ["Fabian Barthez", "Peter Shilton"], multiPoint: true, maxPoints: 2 },
-        { q: "Hvilket nummer spillede Preben Elkjær med ved VM i 1986?", a: ["10"] },
-        { q: "Hvilke to hold mødte hinanden ved 'The Battle of Nuremberg' ved VM i 2006?", a: ["Holland og Portugal", "Portugal og Holland", "Holland", "Portugal"] },
-        { q: "Hvem scorede for Nigeria mod Danmark ved VM i 1998?", a: ["Tijani Babangida", "Babangida"] },
-        { q: "Hvem scorede for Spanien mod Tyskland i semifinalen ved VM 2010?", a: ["Puyol", "Carles Puyol"] },
-        { q: "Hvilket år var England, Scotland, Wales og Nordirland (UK) alle med til VM?", a: ["1958"] },
-        { q: "Hvilken forsvarsspiller scorede både i ottendedels- og kvartfinalen ved VM i 2014 for Brasilien?", a: ["David Luiz", "Luiz"] },
+        // ── RUNDE 1 ───────────────────────────────────────
+        { roundBreak: true, roundNumber: 1, roundLabel: "Runde 1" },
+        { q: "Guillermo Stábile blev topscorer ved VM i 1930. Hvilket land spillede han for?", a: ["Argentina"] },
+        { q: "Hvilke 3 PSV Eindhoven-spillere var i den danske VM-trup i 2002?", a: ["Dennis Rommedahl", "Jan Heinze", "Kasper Bøgelund", "Kasper Bogelund"], multiPoint: true, maxPoints: 3 },
+        { q: "På hvilket stadion spillede Danmark sin første kamp ved VM i 1986?", a: ["Estadio Neza 86", "Nezahualcóyotl", "Nezahualcoyotl", "Neza 86", "Neza"] },
+        { q: "Hvem var Brasiliens træner ved VM i 2002?", a: ["Luiz Felipe Scolari", "Scolari"] },
+        { q: "16 lande deltog ved VM i 1934. Hvor mange af dem var ikke fra Europa? 2, 4 eller 6?", a: ["4"] },
+        { q: "Hvem blev kåret til turneringens bedste unge spiller ved VM i 2018?", a: ["Kylian Mbappe", "Kylian Mbappé", "Mbappe", "Mbappé"] },
+        { q: "Ved hvilket VM skete det for første gang, at værtslandet ikke kom videre fra gruppen?", a: ["Sydafrika 2010", "VM 2010", "2010", "Sydafrika", "South Africa"] },
+        { q: "Hvilken VM-finale dømte Collina?", a: ["VM 2002", "2002"] },
+        { q: "Kampen mellem Colombia og Sovjetunionen i 1962 endte 4-4. Hvad var det specielle ved Colombias reducerende mål til 4-2?", a: ["hjørnespark", "direkte på hjørnespark", "direkte fra hjørnespark"] },
+        { q: "Hvilken af følgende spillere var ikke med i Tysklands VM-trup i 2006: Oliver Kahn, Robert Huth eller Jens Jeremies?", a: ["Jens Jeremies", "Jeremies"] },
+        { q: "Hvilket land, der har deltaget i alt 2 gange ved VM, fik bronze sidst de stillede op?", a: ["Tyrkiet", "Turkey"] },
+        { q: "I hvilket årti debuterede England ved VM?", a: ["1950erne", "1950"] },
+        { q: "Hvem scorede 4 mål for Holland i 2014?", a: ["Robin van Persie", "van Persie", "Van Persie"] },
+        { q: "Hvilken tekst på 3 bogstaver står der i Brasiliens logo?", a: ["CBF"] },
+        { q: "Hvilket land var vært ved VM i 1954?", a: ["Schweiz", "Switzerland"] },
+        // ── RUNDE 2 ───────────────────────────────────────
+        { roundBreak: true, roundNumber: 2, roundLabel: "Runde 2" },
+        { q: "Hvem er jeg? Jeg er født 13. februar 1979. Jeg spillede professionelt fra 1997 til 2018. I den tid spillede jeg 147 landskampe og scorede 17 mål, heraf 3 ved VM (mod hhv. Argentina i 2006, Sydafrika i 2010 og Kroatien i 2014).", a: ["Rafael Marquez", "Marquez"] },
+        { q: "Nævn 2 af de 4 spillere der scorede 5 mål ved VM i 2010.", a: ["David Villa", "Wesley Sneijder", "Thomas Müller", "Thomas Muller", "Diego Forlan", "Diego Forlán"], multiPoint: true, maxPoints: 2 },
+        { q: "5 forskellige lande har oplevet som forsvarende verdensmestre at ryge ud i indledende runde ved det efterfølgende VM. Det drejer sig om Tyskland, Spanien, Italien, Brasilien og hvem?", a: ["Frankrig", "France"] },
+        { q: "Hvilke to spillere har scoret hattrick i en VM-finale?", a: ["Geoff Hurst", "Hurst", "Kylian Mbappe", "Kylian Mbappé", "Mbappe", "Mbappé"], multiPoint: true, maxPoints: 2 },
+        { q: "Hvilket af følgende lande har aldrig deltaget ved VM: Slovenien, Kuwait eller Zambia?", a: ["Zambia"] },
+        { q: "I hvilken VM-turnering deltog der for første gang 32 hold?", a: ["1998"] },
+        { q: "Hvilket hold slog Argentina i VM-finalen i 1978?", a: ["Holland", "Nederlandene"] },
+        { q: "Hvem var argentinsk træner ved VM i 1986?", a: ["Carlos Bilardo", "Bilardo"] },
+        { q: "Jordan og Curaçao debuterer ved VM 2026 – hvem er de to andre debutanter?", a: ["Uzbekistan", "Kap Verde", "Cape Verde"], multiPoint: true, maxPoints: 2 },
+        { q: "På hvilket stadion blev VM-finalen i 1990 spillet?", a: ["Stadio Olimpico", "Olimpico", "Rom", "Roma"] },
+        { q: "Hvilken spiller blev i 1982 den ældste verdensmester?", a: ["Dino Zoff", "Zoff"] },
+        { q: "Hvor mange point fik Qatar ved VM i 2022?", a: ["0"] },
+        { q: "Hvilken engelsk klub havde to danskere i VM-truppen 2018?", a: ["Huddersfield"] },
+        { q: "Hvilken spiller, der gennem hele karrieren spillede for Inter, var anfører for Italien i VM-finalen 1970?", a: ["Giacinto Facchetti", "Facchetti"] },
+        { q: "Hvilken russer, som i en stor del af karrieren spillede i spansk fodbold, scorede 4 mål ved VM i 2018?", a: ["Dennis Cheryshev", "Cheryshev"] },
+        // ── RUNDE 3 ───────────────────────────────────────
+        { roundBreak: true, roundNumber: 3, roundLabel: "Runde 3" },
+        { q: "Hvilken VM-turnering havde følgende 4 kvartfinaler: Argentina-Jugoslavien, Irland-Italien, Tjekkoslovakiet-Vesttyskland, Cameroon-England?", a: ["1990"] },
+        { q: "Hvilke 2 spillere er med 5 mål alletiders mest scorende svenske spillere ved VM?", a: ["Kenneth Andersson", "Andersson", "Henrik Larsson", "Henke Larsson", "Larsson"], multiPoint: true, maxPoints: 2 },
+        { q: "Hvem var Tysklands træner ved VM i 2022?", a: ["Hansi Flick", "Flick"] },
+        { q: "På hvilket stadion blev VM-finalen i 1994 spillet?", a: ["Rose Bowl", "Pasadena", "Rose Bowl Pasadena"] },
+        { q: "Nævn 3 af de 11 spillere der startede for Holland i VM-finalen i 1974.", a: ["Jan Jongbloed", "Wim Suurbier", "Wim Rijsbergen", "Arie Haan", "Ruud Krol", "Wim Jansen", "Johan Neeskens", "Willem van Hanegem", "Johnny Rep", "Johan Cruyff", "Rob Rensenbrink"], multiPoint: true, maxPoints: 3 },
+        { q: "Hvilket land VM-debuterede i 2010 som selvstændigt land?", a: ["Slovakiet", "Slovakia"] },
+        { q: "Hvilken italiener scorede 5 mål ved VM i 1938 og er samtidig all-time topscorer i Serie A?", a: ["Silvio Piola", "Piola"] },
+        { q: "For hvilket land spillede Hadji ved VM i 1998?", a: ["Marokko", "Morocco"] },
+        { q: "Hvilke to målmænd fra hhv. England og Frankrig deler med 10 kampe rekorden for flest cleansheets?", a: ["Peter Shilton", "Shilton", "Fabian Barthez", "Barthez"], multiPoint: true, maxPoints: 2 },
+        { q: "Hvilket trøjenummer havde Preben Elkjær ved VM i 1986?", a: ["10"] },
+        { q: "Hvilke to hold mødte hinanden i 2006 i det der senere blev kaldt for Slaget ved Nürnberg?", a: ["Holland", "Portugal"], multiPoint: true, maxPoints: 2 },
+        { q: "Hvem scorede Nigerias eneste mål mod Danmark ved VM 1/8-finalen i 1998?", a: ["Tijani Babangida", "Babangida"] },
+        { q: "Hvem scorede Spaniens eneste mål i semifinalen mod Tyskland i 2010?", a: ["Puyol", "Carles Puyol"] },
+        { q: "Hvilket år deltog både England, Wales, Skotland og Nordirland ved VM?", a: ["1954"] },
+        { q: "Hvilken brasilianer, der ikke var udpræget målscorer, scorede i hhv. 1/8-finalen og kvartfinalen ved VM i 2014?", a: ["David Luiz", "Luiz"] },
+        // ── DECIDER ───────────────────────────────────────
+        { roundBreak: true, roundNumber: 0, roundLabel: "Decider" },
+        { q: "Hvor mange hattrick er der i alt scoret ved VM (alle slutrunder sammenlagt)?", a: ["54"] },
     ],
 };
 
@@ -715,7 +725,7 @@ quizData.blandet = [
     ...quizData.stadion,
     ...quizData.historie,
     ...quizData.rekorder,
-    ...quizData.quizforliv,
+    ...quizData.quizforliv.filter(q => !q.roundBreak),
 ];
 
 let currentQuizData = [];
@@ -729,7 +739,7 @@ let quizAnswerLog = [];
 function startQuiz(category) {
     let data = quizData[category] || [];
     if (data.length === 0) { alert('Ingen spørgsmål i denne kategori'); return; }
-    currentQuizData = [...data].sort(() => 0.5 - Math.random());
+    currentQuizData = category === 'quizforliv' ? [...data] : [...data].sort(() => 0.5 - Math.random());
     currentQuestionIndex = 0;
     score = 0; correctAnswers = 0; wrongAnswers = 0; skippedAnswers = 0;
     quizAnswerLog = [];
@@ -754,8 +764,8 @@ function logQuizAnswer(entry) {
 
 function renderResultsBreakdown() {
     const container = document.getElementById('resultsBreakdown');
-    container.innerHTML = quizAnswerLog.map((entry, index) => {
-        if (!entry) return '';
+    const entries = quizAnswerLog.filter(Boolean);
+    container.innerHTML = entries.map((entry, index) => {
         const correctAnswerText = Array.isArray(entry.correctAnswers) ? entry.correctAnswers.join(', ') : entry.correctAnswers;
         const userAnswerText = entry.userAnswer ? escapeHtml(entry.userAnswer) : '<em>Ingen svar</em>';
         return `<div class="results-item ${entry.status}">
@@ -768,16 +778,42 @@ function renderResultsBreakdown() {
     }).join('');
 }
 
+function showRoundBreak(q) {
+    const realTotal = currentQuizData.filter(x => !x.roundBreak).length;
+    const realDone = currentQuizData.slice(0, currentQuestionIndex).filter(x => !x.roundBreak).length;
+    document.getElementById('feedbackContainer').classList.remove('show', 'correct', 'incorrect');
+    document.getElementById('progressFill').style.width = ((realDone / realTotal) * 100) + '%';
+    document.getElementById('questionNumber').textContent = '';
+    document.getElementById('currentQuestion').textContent = '';
+    document.getElementById('totalQuestions').textContent = realTotal;
+    const label = q.roundNumber === 0 ? 'Decider ⚡' : `Runde ${q.roundNumber}`;
+    document.getElementById('questionText').innerHTML =
+        `<div style="text-align:center;padding:30px 0;">`
+        + `<div style="font-size:3em;margin-bottom:12px;">⚽</div>`
+        + `<div style="font-size:2.2em;font-weight:bold;color:#667eea;">${label}</div>`
+        + `</div>`;
+    document.getElementById('answerInput').style.display = 'none';
+    document.getElementById('checkBtn').style.display = 'none';
+    document.getElementById('skipBtn').style.display = 'none';
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.textContent = q.roundNumber === 0 ? 'Vis Decider ⚡' : `Start ${label} →`;
+    nextBtn.style.display = '';
+}
+
 function displayQuestion() {
     if (currentQuestionIndex >= currentQuizData.length) { showResults(); return; }
     const q = currentQuizData[currentQuestionIndex];
-    document.getElementById('questionNumber').textContent = `Spørgsmål ${currentQuestionIndex + 1} af ${currentQuizData.length}`;
+    if (q.roundBreak) { showRoundBreak(q); return; }
+    const realTotal = currentQuizData.filter(x => !x.roundBreak).length;
+    const realIndex = currentQuizData.slice(0, currentQuestionIndex).filter(x => !x.roundBreak).length + 1;
+    document.getElementById('questionNumber').textContent = `Spørgsmål ${realIndex} af ${realTotal}`;
     document.getElementById('questionText').textContent = q.q;
-    document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
-    document.getElementById('totalQuestions').textContent = currentQuizData.length;
+    document.getElementById('currentQuestion').textContent = realIndex;
+    document.getElementById('totalQuestions').textContent = realTotal;
     document.getElementById('answerInput').value = '';
+    document.getElementById('answerInput').style.display = '';
     document.getElementById('feedbackContainer').classList.remove('show', 'correct', 'incorrect');
-    document.getElementById('progressFill').style.width = ((currentQuestionIndex / currentQuizData.length) * 100) + '%';
+    document.getElementById('progressFill').style.width = ((realIndex / realTotal) * 100) + '%';
     document.getElementById('checkBtn').style.display = '';
     document.getElementById('skipBtn').style.display = '';
     document.getElementById('nextBtn').style.display = 'none';
@@ -788,8 +824,12 @@ let autoAdvanceTimer = null;
 
 function advanceNow() {
     if (autoAdvanceTimer) { clearTimeout(autoAdvanceTimer); autoAdvanceTimer = null; }
-    document.getElementById('answerInput').disabled = false;
-    document.getElementById('nextBtn').style.display = 'none';
+    const inp = document.getElementById('answerInput');
+    inp.disabled = false;
+    inp.style.display = '';
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.style.display = 'none';
+    nextBtn.textContent = 'Næste →';
     document.getElementById('checkBtn').style.display = '';
     document.getElementById('skipBtn').style.display = '';
     currentQuestionIndex++;
