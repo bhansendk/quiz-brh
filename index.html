@@ -749,6 +749,12 @@ function startQuiz(category) {
     displayQuestion();
 }
 
+function getCanonicalAnswers(question) {
+    const maxPoints = getQuestionMaxPoints(question);
+    if (question.multiPoint) return question.a.slice(0, maxPoints);
+    return [question.a[0]];
+}
+
 function escapeHtml(value) {
     return String(value)
         .replace(/&/g, '&amp;')
@@ -849,19 +855,22 @@ function checkAnswer() {
         const maxPoints = getQuestionMaxPoints(question);
         const points = getMultiPointScore(userAnswer, accepted, maxPoints);
         const details = getMultiPointDetails(userAnswer, accepted);
+        const canonical = getCanonicalAnswers(question);
+        const canonicalMissing = canonical.filter(c => !details.matched.some(m => checkAnswerMatch(m, [c])));
+        const canonicalMatched = canonical.filter(c => details.matched.some(m => checkAnswerMatch(m, [c])));
         if (points > 0) {
             correctAnswers += points;
             score += points;
             if (points === maxPoints) {
-                feedback.textContent = `Korrekt! Du fik ${points}/${maxPoints} point. Fuldt svar: ${accepted.join(', ')}.`;
+                feedback.textContent = `Korrekt! Du fik ${points}/${maxPoints} point. Svar: ${canonical.join(', ')}.`;
             } else {
-                feedback.textContent = `Delvist korrekt! Du fik ${points}/${maxPoints} point. Du ramte: ${details.matched.join(', ')}. Mangler: ${details.missing.join(', ')}. Fuldt svar: ${accepted.join(', ')}.`;
+                feedback.textContent = `Delvist korrekt! Du fik ${points}/${maxPoints} point. Du ramte: ${canonicalMatched.join(', ')}. Mangler: ${canonicalMissing.join(', ')}.`;
             }
             feedback.classList.add('correct'); feedback.classList.remove('incorrect');
             logQuizAnswer({
                 question: question.q,
                 userAnswer,
-                correctAnswers: accepted,
+                correctAnswers: canonical,
                 points,
                 maxPoints,
                 status: points === maxPoints ? 'correct' : 'partial',
@@ -869,12 +878,12 @@ function checkAnswer() {
             });
         } else {
             wrongAnswers++;
-            feedback.textContent = 'Forkert! Fuldt svar: "' + accepted.join(' og ') + '"';
+            feedback.textContent = 'Forkert! Svar: "' + canonical.join(', ') + '"';
             feedback.classList.add('incorrect'); feedback.classList.remove('correct');
             logQuizAnswer({
                 question: question.q,
                 userAnswer,
-                correctAnswers: accepted,
+                correctAnswers: canonical,
                 points: 0,
                 maxPoints,
                 status: 'incorrect',
@@ -883,14 +892,15 @@ function checkAnswer() {
         }
     } else {
         const isCorrect = checkAnswerMatch(userAnswer, accepted);
+        const canonical = getCanonicalAnswers(question);
         if (isCorrect) {
             correctAnswers++; score++;
-            feedback.textContent = 'Korrekt! Fuldt svar: "' + accepted.join(' eller ') + '"';
+            feedback.textContent = 'Korrekt! Svar: "' + canonical[0] + '"';
             feedback.classList.add('correct'); feedback.classList.remove('incorrect');
             logQuizAnswer({
                 question: question.q,
                 userAnswer,
-                correctAnswers: accepted,
+                correctAnswers: canonical,
                 points: 1,
                 maxPoints: 1,
                 status: 'correct',
@@ -898,12 +908,12 @@ function checkAnswer() {
             });
         } else {
             wrongAnswers++;
-            feedback.textContent = 'Forkert! Fuldt svar: "' + accepted.join(' eller ') + '"';
+            feedback.textContent = 'Forkert! Svar: "' + canonical[0] + '"';
             feedback.classList.add('incorrect'); feedback.classList.remove('correct');
             logQuizAnswer({
                 question: question.q,
                 userAnswer,
-                correctAnswers: accepted,
+                correctAnswers: canonical,
                 points: 0,
                 maxPoints: 1,
                 status: 'incorrect',
