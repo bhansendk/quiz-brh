@@ -934,7 +934,7 @@ function skipQuestion() {
     logQuizAnswer({
         question: question.q,
         userAnswer: '',
-        correctAnswers: question.a,
+        correctAnswers: getCanonicalAnswers(question),
         points: 0,
         maxPoints: getQuestionMaxPoints(question),
         status: 'skipped',
