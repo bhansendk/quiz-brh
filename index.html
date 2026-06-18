@@ -224,19 +224,14 @@
     <div class="menu active">
         <div class="stats">
             <p><strong>Vælg en kategori for at starte</strong></p>
-            <p>Spørgsmål om VM i fodbold gennem tiderne</p>
+            <p>Vælg et emneområde eller tryk "Udforsk kategorier" for at bore ned.</p>
         </div>
         <div class="category-grid">
-            <button class="category-btn" onclick="startQuiz('quizforliv')" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">&#127942; Quizforliv VM<br><small>VM quiz inspiration</small></button>
-            <button class="category-btn" onclick="startQuiz('topscorers')">&#127919; Topscorere<br><small>Mål og scoringer</small></button>
-            <button class="category-btn" onclick="startQuiz('traenere')">&#128104;&#8205;&#127979; Trænere<br><small>Hvem ledede holdet?</small></button>
-            <button class="category-btn" onclick="startQuiz('grupper')">&#9917; Gruppekampe<br><small>Hvem mødte hvem?</small></button>
-            <button class="category-btn" onclick="startQuiz('knockout')">&#127942; Slutspil<br><small>Resultater</small></button>
-            <button class="category-btn" onclick="startQuiz('squads')">&#128101; Spillere<br><small>Hold og anførelse</small></button>
-            <button class="category-btn" onclick="startQuiz('stadion')">&#127967; Stadioner<br><small>Byer og arenaer</small></button>
-            <button class="category-btn" onclick="startQuiz('historie')">&#128218; VM Historie<br><small>Titler og fakta</small></button>
-            <button class="category-btn" onclick="startQuiz('rekorder')">&#127941; Rekorder<br><small>Statistik og records</small></button>
-            <button class="category-btn" onclick="startQuiz('faktamix')">&#127922; FaktaMix<br><small>Alle kategorier</small></button>
+            <button class="category-btn" onclick="startQuiz('faktamix')" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">&#127922; FaktaMix<br><small>Blandet quiz</small></button>
+            <button class="category-btn" onclick="(function(){ explorerPath=[]; explorerDrill(1); scrollToExplorer(); })()">&#127936; Sport<br><small>Sport og konkurrencer</small></button>
+            <button class="category-btn" onclick="(function(){ explorerPath=[]; explorerDrill(2); scrollToExplorer(); })()">&#127909; Underholdning<br><small>Film, musik og kultur</small></button>
+            <button class="category-btn" onclick="(function(){ explorerPath=[]; explorerDrill(3); scrollToExplorer(); })()">&#127758; Kultur & Historie<br><small>Geografi og historiske facts</small></button>
+            <button class="category-btn" onclick="(function(){ explorerPath=[]; explorerDrill(4); scrollToExplorer(); })()">&#9881; Specialer<br><small>Tenable, startopstilling</small></button>
         </div>
         <hr style="margin: 20px 0; border-color: #e0e0e0;">
         <p style="text-align:center; color:#888; font-size:0.9em; margin-bottom:12px;">&#9654; Specielle spiltilstande</p>
@@ -2703,8 +2698,24 @@ const categoryTree = {
         { name: 'Pubquiz', desc: 'FaktaMix — blandede spørgsmål', quizKey: 'faktamix' },
         { name: 'Sport', desc: 'Alt indenfor sport', children: [
             { name: 'Fodbold', desc: 'Lande- og klubfodbold', children: [
-                { name: 'VM (Herre)', desc: 'VM i herrefodbold', quizKey: 'faktamix' },
+                { name: 'VM (Herre)', desc: 'VM i herrefodbold', children: [
+                    { name: 'Topscorere (VM)', desc: 'Topscorere gennem tiderne', quizKey: 'topscorers' },
+                    { name: 'Trænere (VM)', desc: 'Vindende trænere', quizKey: 'traenere' },
+                    { name: 'Grupper (VM)', desc: 'Gruppekampe og grupper', quizKey: 'grupper' },
+                    { name: 'Slutspil (VM)', desc: 'Knockout og resultater', quizKey: 'knockout' },
+                    { name: 'Trup / Squads (VM)', desc: 'Spillere og trupper', quizKey: 'squads' },
+                    { name: 'Stadioner (VM)', desc: 'Arenaer og byer', quizKey: 'stadion' },
+                    { name: 'Rekorder (VM)', desc: 'Statistik og rekorder', quizKey: 'rekorder' },
+                    { name: 'Historie (VM)', desc: 'Turneringshistorie', quizKey: 'historie' }
+                ]},
+                // Også synlige direkte under Fodbold for hurtig adgang
                 { name: 'Topscorere (VM)', desc: 'Topscorere gennem tiderne', quizKey: 'topscorers' },
+                { name: 'Trænere (VM)', desc: 'Vindende trænere', quizKey: 'traenere' },
+                { name: 'Grupper (VM)', desc: 'Gruppekampe og grupper', quizKey: 'grupper' },
+                { name: 'Slutspil (VM)', desc: 'Knockout og resultater', quizKey: 'knockout' },
+                { name: 'Trup / Squads (VM)', desc: 'Spillere og trupper', quizKey: 'squads' },
+                { name: 'Stadioner (VM)', desc: 'Arenaer og byer', quizKey: 'stadion' },
+                { name: 'Rekorder (VM)', desc: 'Statistik og rekorder', quizKey: 'rekorder' },
                 { name: 'Historie (VM)', desc: 'Turneringshistorie', quizKey: 'historie' },
                 { name: 'Klubfodbold', desc: 'Ligaer og cup', quizKey: '' }
             ]},
@@ -2748,9 +2759,13 @@ function renderExplorer() {
     const childrenHtml = (node.children || []).map((child, i) => {
         const count = gatherQuestionsFromNode(child).length;
         const desc = child.desc ? `<div style="font-size:0.9em;color:#666;margin-top:6px;">${child.desc}</div>` : '';
+        // detect VM-related quizzes so we can show a VM badge when listed under Fodbold
+        const vmKeys = new Set(['topscorers','historie','traenere','grupper','knockout','squads','stadion','rekorder']);
+        const isVM = /vm/i.test(child.name || '') || vmKeys.has(child.quizKey) || /vm/i.test(node.name || '');
+        const vmBadge = isVM ? `<span style="display:inline-block;background:#fff4e0;color:#7a4b00;padding:4px 8px;border-radius:12px;margin-left:8px;font-size:0.8em;font-weight:700;">VM</span>` : '';
         return `
             <div style="display:inline-block;margin:6px;vertical-align:top;">
-                <button class="category-btn" style="min-width:180px;" onclick="explorerDrill(${i})">${child.name}</button>
+                <button class="category-btn" style="min-width:180px;" onclick="explorerDrill(${i})">${child.name} ${vmBadge}</button>
                 <div style="text-align:center;margin-top:6px;color:#666;font-size:0.9em;">${count} spørgsmål</div>
                 ${desc}
             </div>`;
