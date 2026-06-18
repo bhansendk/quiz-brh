@@ -6,40 +6,51 @@
     <title>VM i Fodbold Quiz</title>
 
     <style>
+        :root {
+            --bg-start: #f5f7fb;
+            --bg-end: #f8fbff;
+            --primary: #3466d6;
+            --accent: #6c5ce7;
+            --card-bg: linear-gradient(135deg, rgba(52,102,214,0.95), rgba(108,92,231,0.95));
+            --muted: #6b7280;
+            --surface: #ffffff;
+            --shadow: 0 8px 24px rgba(15,23,42,0.06);
+            --glass: rgba(255,255,255,0.85);
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 20px;
+            padding: 28px;
         }
         .container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 900px;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            max-width: 980px;
             width: 100%;
-            padding: 40px;
+            padding: 32px;
         }
         .header { text-align: center; margin-bottom: 40px; border-bottom: 3px solid #667eea; padding-bottom: 20px; }
-        .header h1 { color: #333; font-size: 2.5em; margin-bottom: 10px; }
-        .header p { color: #666; font-size: 1.1em; }
+        .header h1 { color: #111827; font-size: 2.1em; margin-bottom: 8px; }
+        .header p { color: var(--muted); font-size: 1em; margin-bottom: 8px; }
         .menu { display: none; text-align: center; }
         .menu.active { display: block; }
         .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .category-btn {
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 18px 16px;
+            background: var(--card-bg);
             color: white; border: none; border-radius: 10px;
-            font-size: 1.1em; font-weight: bold; cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 1em; font-weight: 700; cursor: pointer;
+            transition: transform 0.18s, box-shadow 0.18s;
         }
-        .category-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(102,126,234,0.4); }
+        .category-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(15,23,42,0.09); }
         .stats { background: #f0f4ff; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
-        .stats p { color: #666; margin: 5px 0; }
+        .stats p { color: var(--muted); margin: 6px 0; }
         .quiz-screen { display: none; }
         .quiz-screen.active { display: block; }
         .progress-bar { background: #ddd; height: 8px; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
@@ -50,11 +61,11 @@
         .answer-input { width: 100%; padding: 15px; font-size: 1.1em; border: 2px solid #ddd; border-radius: 8px; transition: border-color 0.3s; margin-bottom: 20px; }
         .answer-input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
         .button-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-        .btn { padding: 12px 30px; font-size: 1em; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
-        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102,126,234,0.3); }
-        .btn-secondary { background: #f0f4ff; color: #667eea; border: 2px solid #667eea; }
-        .btn-secondary:hover { background: #667eea; color: white; }
+        .btn { padding: 10px 20px; font-size: 0.95em; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: all 0.18s; }
+        .btn-primary { background: linear-gradient(90deg, var(--primary), var(--accent)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,23,42,0.08); }
+        .btn-secondary { background: var(--glass); color: var(--primary); border: 1px solid rgba(52,102,214,0.12); }
+        .btn-secondary:hover { background: #f3f6ff; }
         .feedback { padding: 20px; border-radius: 8px; margin-bottom: 20px; display: none; }
         .feedback.show { display: block; }
         .feedback.correct { background: #d4edda; border: 2px solid #28a745; color: #155724; }
@@ -172,17 +183,22 @@
         .overview-grid { margin-top:8px; }
         .search-result { background: white; border-radius:8px; padding:10px 12px; box-shadow:0 6px 18px rgba(0,0,0,0.05); margin-bottom:8px; }
         .search-result .meta { color:#666; font-size:0.9em; margin-top:6px; }
-        .type-card { background: white; border-radius:10px; padding:14px; box-shadow:0 8px 20px rgba(0,0,0,0.06); cursor:pointer; transition:transform .15s,box-shadow .15s; }
-        .type-card:hover { transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.08); }
+        .type-card { background: var(--surface); border-radius:10px; padding:14px; box-shadow:0 8px 20px rgba(15,23,42,0.04); cursor:pointer; transition:transform .15s,box-shadow .15s; }
+        .type-card:hover { transform:translateY(-6px); box-shadow:0 18px 40px rgba(15,23,42,0.07); }
+        .vm-badge { display:inline-block;background:#fff4e0;color:#7a4b00;padding:4px 8px;border-radius:12px;margin-left:8px;font-size:0.8em;font-weight:700;border:1px solid rgba(122,75,0,0.06); }
         .type-card h3 { margin-bottom:6px; color:#333; font-size:1.05em; }
         .type-card p { margin:0;color:#666;font-size:0.95em; }
+        .crumbs { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+        .crumbs button, .crumbs a { background: transparent; border: none; color: #667eea; cursor: pointer; font-weight:700; }
+        .sub-link { color:#2a2a2a; text-decoration:none; font-weight:700; display:inline-block; padding:6px 10px; border-radius:8px; background:#ffffff; border:1px solid #eee; }
+        .sub-link:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.06); transform: translateY(-2px); }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>&#127918; Quiz Central</h1>
-        <p>Quizzer til fester, pubquiz og hurtige udfordringer — vælg kategori eller start et blandet sæt.</p>
+        <h1 id="siteTitle">&#127918; Quiz Central</h1>
+        <p id="siteSubtitle">Quizzer til fester, pubquiz og hurtige udfordringer — vælg kategori eller start et blandet sæt.</p>
         <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;">
             <button class="btn btn-primary" onclick="startQuiz('faktamix')">Start FaktaMix</button>
             <button class="btn btn-secondary" onclick="scrollToExplorer()">Udforsk kategorier</button>
@@ -2752,9 +2768,28 @@ function renderExplorer() {
     const container = document.getElementById('categoryExplorer');
     if (!container) return;
     const node = getNodeByPath(explorerPath) || categoryTree;
-    const crumbs = ['<button class="btn btn-secondary" onclick="explorerBackToRoot()">Forside</button>'];
-    let accPath = [];
-    crumbs.push(`<strong style="margin-left:8px;">${node.name}</strong>`);
+    // Build breadcrumb trail from explorerPath
+    const crumbsArr = [];
+    crumbsArr.push(`<button class="btn btn-secondary" onclick="explorerBackToRoot()">Forside</button>`);
+    let cursor = categoryTree;
+    for (let i = 0; i < explorerPath.length; i++) {
+        const idx = explorerPath[i];
+        if (!cursor.children || !cursor.children[idx]) break;
+        cursor = cursor.children[idx];
+        const pathCopy = explorerPath.slice(0, i+1);
+        crumbsArr.push(`<button onclick="(function(){ explorerPath = [${pathCopy.join(',')}]; renderExplorer(); })()">${cursor.name}</button>`);
+    }
+    // If at root, show main title; otherwise set title to last crumb
+    const siteTitle = document.getElementById('siteTitle');
+    const siteSubtitle = document.getElementById('siteSubtitle');
+    if (explorerPath.length === 0) {
+        if (siteTitle) siteTitle.innerHTML = '&#127918; Quiz Central';
+        if (siteSubtitle) siteSubtitle.textContent = 'Quizzer til fester, pubquiz og hurtige udfordringer — vælg kategori eller start et blandet sæt.';
+    } else {
+        const last = crumbsArr[crumbsArr.length-1].replace(/<[^>]+>/g, '');
+        if (siteTitle) siteTitle.textContent = last;
+        if (siteSubtitle) siteSubtitle.textContent = node.desc || '';
+    }
 
     const childrenHtml = (node.children || []).map((child, i) => {
         const count = gatherQuestionsFromNode(child).length;
@@ -2762,13 +2797,24 @@ function renderExplorer() {
         // detect VM-related quizzes so we can show a VM badge when listed under Fodbold
         const vmKeys = new Set(['topscorers','historie','traenere','grupper','knockout','squads','stadion','rekorder']);
         const isVM = /vm/i.test(child.name || '') || vmKeys.has(child.quizKey) || /vm/i.test(node.name || '');
-        const vmBadge = isVM ? `<span style="display:inline-block;background:#fff4e0;color:#7a4b00;padding:4px 8px;border-radius:12px;margin-left:8px;font-size:0.8em;font-weight:700;">VM</span>` : '';
-        return `
+        const vmBadge = isVM ? `<span class="vm-badge">VM</span>` : '';
+        // If current node is 'Fodbold' or a VM node, render big category cards. Otherwise render compact links.
+        const isFodboldContext = /fodbold/i.test(node.name || '');
+        if (isFodboldContext || /vm/i.test(node.name || '')) {
+            return `
             <div style="display:inline-block;margin:6px;vertical-align:top;">
                 <button class="category-btn" style="min-width:180px;" onclick="explorerDrill(${i})">${child.name} ${vmBadge}</button>
                 <div style="text-align:center;margin-top:6px;color:#666;font-size:0.9em;">${count} spørgsmål</div>
                 ${desc}
             </div>`;
+        } else {
+            return `
+            <div style="display:block;margin:8px 0;">
+                <a href="#" class="sub-link" onclick="(function(){ explorerDrill(${i}); return false; })()">${child.name} ${vmBadge}</a>
+                <span style="margin-left:10px;color:var(--muted);font-size:0.95em;">${count} spørgsmål</span>
+                ${desc}
+            </div>`;
+        }
     }).join('');
 
     const actionHtml = node.quizKey || (node.children && node.children.length)
@@ -2781,7 +2827,7 @@ function renderExplorer() {
 
     container.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
-            <div>${crumbs.join(' / ')}</div>
+            <div class="crumbs">${crumbsArr.join(' / ')}</div>
             <div style="color:#666;font-size:0.95em;">Vælg kategori eller vælg antal blandede spørgsmål</div>
         </div>
         <div style="margin-top:12px;">${childrenHtml || '<em>Ingen underkategorier</em>'}</div>
