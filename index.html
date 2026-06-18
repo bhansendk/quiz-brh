@@ -181,14 +181,33 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>&#9917; VM i Fodbold Quiz</h1>
-        <p>Test dine kendskaber til VM i fodbold</p>
+        <h1>&#127918; Quiz Central</h1>
+        <p>Quizzer til fester, pubquiz og hurtige udfordringer — vælg kategori eller start et blandet sæt.</p>
+        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;">
+            <button class="btn btn-primary" onclick="startQuiz('faktamix')">Start FaktaMix</button>
+            <button class="btn btn-secondary" onclick="scrollToExplorer()">Udforsk kategorier</button>
+        </div>
         <div class="admin-link"><a onclick="promptAdminLogin()">&#9881;</a></div>
     </div>
 
     <div id="searchBar" style="margin:14px 0 8px 0;display:flex;gap:8px;align-items:center;">
         <input id="searchInput" placeholder="Søg spørgsmål eller kategori..." oninput="performSearch()" style="flex:1;padding:10px 12px;border-radius:8px;border:2px solid #e5e7eb;font-size:1em;">
         <button class="btn btn-secondary" onclick="clearSearch()">Ryd</button>
+    </div>
+
+    <div id="hero-stats" style="display:flex;gap:12px;margin-bottom:18px;align-items:center;justify-content:center;">
+        <div class="type-card" style="text-align:center;min-width:140px;">
+            <h3 id="statTotalQ">0</h3>
+            <p>Spørgsmål i alt</p>
+        </div>
+        <div class="type-card" style="text-align:center;min-width:140px;">
+            <h3 id="statCategories">0</h3>
+            <p>Kategorier</p>
+        </div>
+        <div class="type-card" style="text-align:center;min-width:140px;">
+            <h3 id="statTypes">0</h3>
+            <p>Quiztyper</p>
+        </div>
     </div>
 
     <div id="searchResults" style="margin-bottom:12px;display:none;"></div>
@@ -217,7 +236,7 @@
             <button class="category-btn" onclick="startQuiz('stadion')">&#127967; Stadioner<br><small>Byer og arenaer</small></button>
             <button class="category-btn" onclick="startQuiz('historie')">&#128218; VM Historie<br><small>Titler og fakta</small></button>
             <button class="category-btn" onclick="startQuiz('rekorder')">&#127941; Rekorder<br><small>Statistik og records</small></button>
-            <button class="category-btn" onclick="startQuiz('blandet')">&#127922; Blandet<br><small>Alle kategorier</small></button>
+            <button class="category-btn" onclick="startQuiz('faktamix')">&#127922; FaktaMix<br><small>Alle kategorier</small></button>
         </div>
         <hr style="margin: 20px 0; border-color: #e0e0e0;">
         <p style="text-align:center; color:#888; font-size:0.9em; margin-bottom:12px;">&#9654; Specielle spiltilstande</p>
@@ -513,10 +532,10 @@ function getAutoAdvanceDelay(question) {
 
 const quizData = {
     topscorers: [
-        { q: "Hvem scorede rekordmange 13 mål ved ét VM i 1958 - en rekord der stadig ikke er slået?", a: ["Just Fontaine", "Fontaine"] },
-        { q: "Hvem var topscorer ved VM 1970 med 10 mål for Vesttyskland?", a: ["Gerd Müller", "Gerd Muller", "Müller", "Muller"] },
-        { q: "Hvem var topscorer ved VM 1966 med 9 mål for Portugal?", a: ["Eusébio", "Eusebio"] },
-        { q: "Hvem var topscorer ved VM 1978 med 6 mål for Argentina - herunder 2 i finalen - og vandt Guldstøvlen?", a: ["Mario Kempes", "Kempes"] },
+        { q: "Hvem scorede rekordmange 13 mål ved ét VM i 1958 - en rekord der stadig ikke er slået?", a: ["Just Fontaine", "Fontaine"], tags: ["fodbold","vm","sport","faktamix"] },
+        { q: "Hvem var topscorer ved VM 1970 med 10 mål for Vesttyskland?", a: ["Gerd Müller", "Gerd Muller", "Müller", "Muller"], tags: ["fodbold","vm","sport","faktamix"] },
+        { q: "Hvem var topscorer ved VM 1966 med 9 mål for Portugal?", a: ["Eusébio", "Eusebio"], tags: ["fodbold","vm","sport","faktamix"] },
+        { q: "Hvem var topscorer ved VM 1978 med 6 mål for Argentina - herunder 2 i finalen - og vandt Guldstøvlen?", a: ["Mario Kempes", "Kempes"], tags: ["fodbold","vm","sport","faktamix"] },
         { q: "Hvem var topscorer ved VM 1982 og scorede hat-trick mod Brasilien i anden rundekampfase?", a: ["Paolo Rossi", "Rossi"] },
         { q: "Hvem var topscorer ved VM 1986 med 6 mål for England og vandt Guldstøvlen?", a: ["Gary Lineker", "Lineker"] },
         { q: "Hvem var topscorer ved VM 1990 med 6 mål og vandt også prisen som bedste spiller?", a: ["Salvatore Schillaci", "Schillaci"] },
@@ -534,9 +553,9 @@ const quizData = {
         { q: "Hvem scorede to mål for England i VM-ottendedelfinalen mod Ecuador i 2006?", a: ["David Beckham", "Beckham"] },
     ],
     traenere: [
-        { q: "Hvem var Danmarks landstræner ved den historiske VM-debut i 1986?", a: ["Sepp Piontek", "Piontek"] },
-        { q: "Hvem var Danmarks landstræner ved VM 1998?", a: ["Bo Johansson", "Johansson"] },
-        { q: "Hvem var Danmarks landstræner ved VM 2010?", a: ["Morten Olsen", "Olsen"] },
+        { q: "Hvem var Danmarks landstræner ved den historiske VM-debut i 1986?", a: ["Sepp Piontek", "Piontek"], tags: ["fodbold","vm","traener","faktamix"] },
+        { q: "Hvem var Danmarks landstræner ved VM 1998?", a: ["Bo Johansson", "Johansson"], tags: ["fodbold","vm","traener","faktamix"] },
+        { q: "Hvem var Danmarks landstræner ved VM 2010?", a: ["Morten Olsen", "Olsen"], tags: ["fodbold","vm","traener","faktamix"] },
         { q: "Hvem var Englands træner da de vandt VM i 1966?", a: ["Alf Ramsey", "Ramsey"] },
         { q: "Hvem var Brasiliens træner da de vandt VM i 1970?", a: ["Mário Zagallo", "Mario Zagallo", "Zagallo"] },
         { q: "Hvem var Vesttysklands træner da de vandt VM i 1974?", a: ["Helmut Schön", "Helmut Schon", "Schön", "Schon"] },
@@ -554,9 +573,9 @@ const quizData = {
         { q: "Hvem er den eneste person der har vundet VM som både spiller (1974) og træner (1990) med det samme land?", a: ["Franz Beckenbauer", "Beckenbauer"] },
     ],
     grupper: [
-        { q: "Hvad kaldes skandalekampen ved VM 1982 hvor Vesttyskland og Østrig spillede et aftalt 1-0 for at sende begge hold videre på bekostning af Algeriet?", a: ["Skammen i Gijón", "Disgrace of Gijón", "Gijón"] },
-        { q: "Hvem vandt Gruppe 6 ved VM 1986 med sejre over Skotland, Uruguay og Vesttyskland?", a: ["Danmark", "Denmark"] },
-        { q: "Hvem scorede to mål for Danmark i den historiske storsejer over Uruguay ved VM i 1986?", a: ["Michael Laudrup", "Laudrup"] },
+        { q: "Hvad kaldes skandalekampen ved VM 1982 hvor Vesttyskland og Østrig spillede et aftalt 1-0 for at sende begge hold videre på bekostning af Algeriet?", a: ["Skammen i Gijón", "Disgrace of Gijón", "Gijón"], tags: ["fodbold","vm","grupper","faktamix"] },
+        { q: "Hvem vandt Gruppe 6 ved VM 1986 med sejre over Skotland, Uruguay og Vesttyskland?", a: ["Danmark", "Denmark"], tags: ["fodbold","vm","grupper","faktamix"] },
+        { q: "Hvem scorede to mål for Danmark i den historiske storsejer over Uruguay ved VM i 1986?", a: ["Michael Laudrup", "Laudrup"], tags: ["fodbold","vm","grupper","faktamix"] },
         { q: "Hvem slog forsvarende verdensmester Argentina i gruppespillet ved VM 1990?", a: ["Cameroun", "Cameroon"] },
         { q: "Hvem lavede VM's største overraskelse i 1950 og slog England i VM-gruppespillet på trods af at England var klare favoritter?", a: ["USA"] },
         { q: "Hvem tabte overraskende til Nordkorea og røg ud af VM-gruppespillet i 1966?", a: ["Italien", "Italy"] },
@@ -575,9 +594,9 @@ const quizData = {
         { q: "Hvem scorede to mål for USA mod Portugal i VM-gruppespillet i 2014 inden Portugal udlignede til 2-2 sidst?", a: ["Clint Dempsey", "Dempsey"] },
     ],
     knockout: [
-        { q: "Hvem vandt VM i 1950 ved at slå værtslandet i den afgørende kamp på Maracanã foran næsten 200.000 tilskuere?", a: ["Uruguay"] },
-        { q: "Hvem scorede to mål for Tyskland i den chokerende VM-semifinale i 2014 mod Brasilien - herunder en brace på under to minutter?", a: ["Toni Kroos", "Kroos"] },
-        { q: "Hvem scorede det afgørende mål for Spanien i VM-finalen 2010 i forlænget spilletid?", a: ["Andrés Iniesta", "Iniesta"] },
+        { q: "Hvem vandt VM i 1950 ved at slå værtslandet i den afgørende kamp på Maracanã foran næsten 200.000 tilskuere?", a: ["Uruguay"], tags: ["vm","fodbold","sport","faktamix"] },
+        { q: "Hvem scorede to mål for Tyskland i den chokerende VM-semifinale i 2014 mod Brasilien - herunder en brace på under to minutter?", a: ["Toni Kroos", "Kroos"], tags: ["vm","fodbold","sport","faktamix"] },
+        { q: "Hvem scorede det afgørende mål for Spanien i VM-finalen 2010 i forlænget spilletid?", a: ["Andrés Iniesta", "Iniesta"], tags: ["vm","fodbold","sport","faktamix"] },
         { q: "Hvem scorede målet der vandt VM for Tyskland mod Argentina i forlænget spilletid i 2014?", a: ["Mario Götze", "Mario Gotze", "Götze", "Gotze"] },
         { q: "Hvem brændte det afgørende straffespark i VM-finalen 1994 og sikrede Brasilien sejren?", a: ["Roberto Baggio", "Baggio"] },
         { q: "Hvem scorede to gange med nikke for Frankrig i VM-finalen 1998 mod Brasilien?", a: ["Zinedine Zidane", "Zidane"] },
@@ -601,9 +620,9 @@ const quizData = {
         { q: "Hvem scorede et berømt frisparksmål for Brasilien i VM-kvartfinalen i 2014 mod Colombia?", a: ["David Luiz", "Luiz"] },
     ],
     squads: [
-        { q: "Hvem er den eneste spiller der har vundet VM tre gange?", a: ["Pelé", "Pele"] },
-        { q: "Hvem var anfører for England da de vandt VM i 1966?", a: ["Bobby Moore", "Moore"] },
-        { q: "Hvem var anfører for Vesttyskland da de vandt VM i 1974?", a: ["Franz Beckenbauer", "Beckenbauer"] },
+        { q: "Hvem er den eneste spiller der har vundet VM tre gange?", a: ["Pelé", "Pele"], tags: ["squads","vm","fodbold","faktamix"] },
+        { q: "Hvem var anfører for England da de vandt VM i 1966?", a: ["Bobby Moore", "Moore"], tags: ["squads","vm","fodbold","faktamix"] },
+        { q: "Hvem var anfører for Vesttyskland da de vandt VM i 1974?", a: ["Franz Beckenbauer", "Beckenbauer"], tags: ["squads","vm","fodbold","faktamix"] },
         { q: "Hvem var anfører for Brasilien og scorede det legendariske 4. mål i VM-finalen 1970?", a: ["Carlos Alberto", "Alberto"] },
         { q: "Hvem var Italiens anfører da de vandt VM i 2006 og vandt FIFA's årets spiller-pris samme år?", a: ["Fabio Cannavaro", "Cannavaro"] },
         { q: "Hvem var den yngste spiller til at vinde VM - han var kun 17 år ved VM 1958?", a: ["Pelé", "Pele"] },
@@ -625,9 +644,9 @@ const quizData = {
         { q: "Hvem var målmand for Argentina da de vandt VM i 2022 og reddede tre straffespark i finalen?", a: ["Emiliano Martínez", "Emiliano Martinez", "Martínez", "Martinez"] },
     ],
     stadion: [
-        { q: "Hvad hedder stadionet i Montevideo der husede det første VM-finale i 1930?", a: ["Estadio Centenario", "Centenario"] },
-        { q: "Hvad hedder det berømte stadion i Rio de Janeiro der ved VM 1950 havde ca. 200.000 tilskuere?", a: ["Maracanã", "Maracana"] },
-        { q: "I hvilken mexicansk by ligger Azteca-stadionet der som eneste stadion har husede to VM-finaler - 1970 og 1986?", a: ["Mexico City"] },
+        { q: "Hvad hedder stadionet i Montevideo der husede det første VM-finale i 1930?", a: ["Estadio Centenario", "Centenario"], tags: ["stadion","vm","geografi","faktamix"] },
+        { q: "Hvad hedder det berømte stadion i Rio de Janeiro der ved VM 1950 havde ca. 200.000 tilskuere?", a: ["Maracanã", "Maracana"], tags: ["stadion","vm","geografi","faktamix"] },
+        { q: "I hvilken mexicansk by ligger Azteca-stadionet der som eneste stadion har husede to VM-finaler - 1970 og 1986?", a: ["Mexico City"], tags: ["stadion","vm","geografi","faktamix"] },
         { q: "Hvad hedder stadionet i München der husede VM-finalen i 1974?", a: ["Olympiastadion", "Olympiastadion München"] },
         { q: "På hvilket stadion i London blev VM-finalen 1966 spillet?", a: ["Wembley", "Wembley Stadium"] },
         { q: "I hvilken schweizisk by husede VM-finalen i 1954 - 'Miraklet i Bern'?", a: ["Bern"] },
@@ -645,9 +664,9 @@ const quizData = {
         { q: "I hvilken by husede VM-finalen i 1982?", a: ["Madrid"] },
     ],
     historie: [
-        { q: "Hvem vandt VM i 1938 - det seneste VM inden 2. verdenskrig?", a: ["Italien", "Italy"] },
-        { q: "Hvem er den første nation til at vinde VM to gange i træk?", a: ["Italien", "Italy"] },
-        { q: "Hvem holdt VM i 1950 - det første VM efter 2. verdenskrig?", a: ["Brasilien", "Brazil"] },
+        { q: "Hvem vandt VM i 1938 - det seneste VM inden 2. verdenskrig?", a: ["Italien", "Italy"], tags: ["vm","historie","faktamix"] },
+        { q: "Hvem er den første nation til at vinde VM to gange i træk?", a: ["Italien", "Italy"], tags: ["vm","historie","faktamix"] },
+        { q: "Hvem holdt VM i 1950 - det første VM efter 2. verdenskrig?", a: ["Brasilien", "Brazil"], tags: ["vm","historie","faktamix"] },
         { q: "Hvem er den eneste nation til at have deltaget ved alle VM-slutrunder nogensinde?", a: ["Brasilien", "Brazil"] },
         { q: "Hvornår blev røde og gule kort indført i fodbold - ved hvilket VM?", a: ["1970"] },
         { q: "Hvem var den første afrikanske nation til at nå en VM-kvartfinale?", a: ["Cameroun", "Cameroon"] },
@@ -664,9 +683,9 @@ const quizData = {
         { q: "I hvilken by blev VM-finalen spillet i 1958 da Brasilien vandt for første gang?", a: ["Stockholm"] },
     ],
     rekorder: [
-        { q: "Hvem har lavet flest assists nogensinde ved VM med 9 assists?", a: ["Fritz Walter", "Walter"] },
-        { q: "Hvem satte rekorden for det hurtigste mål nogensinde ved VM med et mål efter blot 11 sekunder i 2002?", a: ["Hakan Şükür", "Hakan Sukur", "Şükür", "Sukur"] },
-        { q: "Hvem fik rødt kort i en VM-finale - nævn en af dem", a: ["Zinedine Zidane", "Zidane", "John Heitinga", "Heitinga", "Gustavo Dezotti", "Dezotti", "Pedro Monzón", "Monzon", "Marcel Desailly", "Desailly"] },
+        { q: "Hvem har lavet flest assists nogensinde ved VM med 9 assists?", a: ["Fritz Walter", "Walter"], tags: ["rekorder","vm","faktamix"] },
+        { q: "Hvem satte rekorden for det hurtigste mål nogensinde ved VM med et mål efter blot 11 sekunder i 2002?", a: ["Hakan Şükür", "Hakan Sukur", "Şükür", "Sukur"], tags: ["rekorder","vm","faktamix"] },
+        { q: "Hvem fik rødt kort i en VM-finale - nævn en af dem", a: ["Zinedine Zidane", "Zidane", "John Heitinga", "Heitinga", "Gustavo Dezotti", "Dezotti", "Pedro Monzón", "Monzon", "Marcel Desailly", "Desailly"], tags: ["rekorder","vm","faktamix"] },
         { q: "To spillere deler rekorden for flest røde kort ved VM med 2 kort hver - nævn en af dem", a: ["Rigobert Song", "Song", "Zinedine Zidane", "Zidane"] },
         { q: "Hvem har fået flest gule kort ved VM med 7 advarsler?", a: ["Javier Mascherano", "Mascherano"] },
         { q: "Hvilken træner har ledet flest VM-kampe nogensinde?", a: ["Helmut Schön", "Helmut Schon", "Schön", "Schon"] },
@@ -684,9 +703,9 @@ const quizData = {
     quizforliv: [
         // ── RUNDE 1 ───────────────────────────────────────
         { roundBreak: true, roundNumber: 1, roundLabel: "Runde 1" },
-        { q: "Guillermo Stábile blev topscorer ved VM i 1930. Hvilket land spillede han for?", a: ["Argentina"] },
-        { q: "Hvilke 3 PSV Eindhoven-spillere var i den danske VM-trup i 2002?", a: ["Dennis Rommedahl", "Jan Heinze", "Kasper Bøgelund", "Kasper Bogelund"], multiPoint: true, maxPoints: 3 },
-        { q: "På hvilket stadion spillede Danmark sin første kamp ved VM i 1986?", a: ["Estadio Neza 86", "Nezahualcóyotl", "Nezahualcoyotl", "Neza 86", "Neza"] },
+        { q: "Guillermo Stábile blev topscorer ved VM i 1930. Hvilket land spillede han for?", a: ["Argentina"], tags: ["vm","faktamix"] },
+        { q: "Hvilke 3 PSV Eindhoven-spillere var i den danske VM-trup i 2002?", a: ["Dennis Rommedahl", "Jan Heinze", "Kasper Bøgelund", "Kasper Bogelund"], multiPoint: true, maxPoints: 3, tags: ["vm","squads","faktamix"] },
+        { q: "På hvilket stadion spillede Danmark sin første kamp ved VM i 1986?", a: ["Estadio Neza 86", "Nezahualcóyotl", "Nezahualcoyotl", "Neza 86", "Neza"], tags: ["vm","stadion","faktamix"] },
         { q: "Hvem var Brasiliens træner ved VM i 2002?", a: ["Luiz Felipe Scolari", "Scolari"] },
         { q: "16 lande deltog ved VM i 1934. Hvor mange af dem var ikke fra Europa? 2, 4 eller 6?", a: ["4"] },
         { q: "Hvem blev kåret til turneringens bedste unge spiller ved VM i 2018?", a: ["Kylian Mbappe", "Kylian Mbappé", "Mbappe", "Mbappé"] },
@@ -739,6 +758,122 @@ const quizData = {
     ],
 };
 
+// Nye kategorier: film, musik, handball, basketball, geografi
+quizData.handball = [
+    { q: "Hvilket land vandt herrernes VM i håndbold i 2019?", a: ["Danmark", "Danmark"], tags: ["handball", "sport"] },
+    { q: "Hvilket land har flest OL-guld i håndbold?", a: ["Sovjetunionen", "Sovjet"], tags: ["handball", "historie"] },
+    { q: "Hvem er kendt som en af de største håndboldspillere, Nicolai eller Domagoj Duvnjak?", a: ["Domagoj Duvnjak", "Duvnjak"], tags: ["handball"] }
+];
+
+quizData.basketball = [
+    { q: "Hvilket land vandt FIBA World Cup 2019?", a: ["Spanien", "Spain"], tags: ["basketball", "sport"] },
+    { q: "Hvilken NBA-spiller har flest MVP-titler?", a: ["Kareem Abdul-Jabbar", "Kareem"], tags: ["basketball"] }
+];
+
+quizData.film = [
+    { q: "Hvilken film vandt Oscar for bedste film i 1994?", a: ["Forrest Gump", "Forrest Gump"], tags: ["film", "underholdning"] },
+    { q: "Hvem instruerede 'Pulp Fiction'?", a: ["Quentin Tarantino", "Tarantino"], tags: ["film"] },
+    { q: "Hvilken dansk film vandt bedste internationale film ved en stor festival?", a: ["Pelle Erobreren", "Pelle"], tags: ["film","dansk"] }
+];
+
+quizData.musik = [
+    { q: "Hvilket band udgav albummet 'Abbey Road'?", a: ["The Beatles", "Beatles"], tags: ["musik","underholdning"] },
+    { q: "Hvem sang 'Like a Rolling Stone'?", a: ["Bob Dylan", "Dylan"], tags: ["musik"] }
+];
+
+quizData.geografi = [
+    { q: "Hvad er hovedstaden i Australien?", a: ["Canberra"], tags: ["geografi","kultur"] },
+    { q: "Hvilket land er størst efter areal?", a: ["Rusland", "Russia"], tags: ["geografi"] }
+];
+
+// Hjælpefunktion til at normalisere tags/noder
+function normalizeTag(t) {
+    return String(t || '').toLowerCase().replace(/[^a-z0-9æøå]+/g, '');
+}
+
+// Opdateret gatherQuestionsFromNode: inkluderer quizKey + tag-match
+function gatherQuestionsFromNode(node) {
+    let out = [];
+    if (!node) return out;
+    const nodeTag = normalizeTag(node.name);
+    // Hvis quizKey er sat, brug det direkte
+    if (node.quizKey && quizData[node.quizKey]) {
+        out = out.concat(quizData[node.quizKey].filter(q => !q.roundBreak));
+    }
+    // Medtag spørgsmål hvor tags matcher node navn
+    Object.keys(quizData).forEach(k => {
+        (quizData[k] || []).forEach(item => {
+            if (!item || item.roundBreak) return;
+            const tags = (item.tags || []).map(normalizeTag);
+            if (tags.includes(nodeTag)) out.push(item);
+        });
+    });
+    // Recursively include children
+    if (node.children) {
+        node.children.forEach(c => { out = out.concat(gatherQuestionsFromNode(c)); });
+    }
+    // Deduplicate by question text
+    const seen = new Set();
+    out = out.filter(it => {
+        const key = (it.q || '').trim();
+        if (seen.has(key)) return false;
+        seen.add(key); return true;
+    });
+    return out;
+}
+
+// Automatisk annotering: tilføj tags baseret på categorie key og keywords
+function autoAnnotateQuestions() {
+    Object.keys(quizData).forEach(cat => {
+        (quizData[cat] || []).forEach(item => {
+            if (!item || item.roundBreak) return;
+            item.tags = item.tags || [];
+            const baseTag = normalizeTag(cat);
+            if (!item.tags.map(normalizeTag).includes(baseTag)) item.tags.push(baseTag);
+            // altid med i faktamix
+            if (!item.tags.map(normalizeTag).includes('faktamix')) item.tags.push('faktamix');
+            // simple keyword heuristics
+            const text = (item.q || '').toLowerCase();
+            if (text.includes('vm') || text.includes('world cup') || text.includes('finale')) {
+                if (!item.tags.map(normalizeTag).includes('vm')) item.tags.push('vm');
+            }
+            if (text.includes('mål') || text.includes('topscorer') || text.includes('hat')) {
+                if (!item.tags.map(normalizeTag).includes('fodbold')) item.tags.push('fodbold');
+            }
+            if (text.includes('film') || text.includes('instruk')) {
+                if (!item.tags.map(normalizeTag).includes('film')) item.tags.push('film');
+            }
+            if (text.includes('musik') || text.includes('sang') || text.includes('album')) {
+                if (!item.tags.map(normalizeTag).includes('musik')) item.tags.push('musik');
+            }
+        });
+    });
+}
+
+// Tilføj flere eksempels spørgsmål til kategorier (ikke duplikeret hvis allerede eksisterer)
+function addMoreQuestions() {
+    const pushIfNew = (key, qobj) => {
+        const arr = quizData[key] = quizData[key] || [];
+        if (!arr.find(x => (x.q || '').trim() === (qobj.q || '').trim())) arr.push(qobj);
+    };
+    pushIfNew('film', { q: 'Hvem spillede hovedrollen i filmen "The Matrix"?', a: ['Keanu Reeves','Reeves'], tags: ['film'] });
+    pushIfNew('musik', { q: 'Hvilket band står bag sangen "Bohemian Rhapsody"?', a: ['Queen'], tags: ['musik'] });
+    pushIfNew('geografi', { q: 'Hvad er verdens længste flod?', a: ['Amazonas', 'Amazon'], tags: ['geografi'] });
+    pushIfNew('handball', { q: 'Hvilket land vandt EM i håndbold for herrer 2012?', a: ['Danmark'], tags: ['handball','sport'] });
+    pushIfNew('basketball', { q: 'Hvilket land vandt OL-guld i basketball 2008?', a: ['USA','United States'], tags: ['basketball','sport'] });
+    pushIfNew('topscorers', { q: 'Hvem var topscorer ved VM 2014?', a: ['James Rodriguez','James'], tags: ['fodbold','vm'] });
+    pushIfNew('historie', { q: 'Hvilket land vandt første VM i fodbold i 1930?', a: ['Uruguay'], tags: ['historie','vm'] });
+}
+
+function calculateStats() {
+    const totalQ = Object.values(quizData).reduce((s, arr) => s + ((arr || []).filter(i => i && !i.roundBreak).length), 0);
+    const categories = Object.keys(quizData).length;
+    const types = (categoryTree.children || []).length;
+    const elQ = document.getElementById('statTotalQ'); if (elQ) elQ.textContent = totalQ;
+    const elC = document.getElementById('statCategories'); if (elC) elC.textContent = categories;
+    const elT = document.getElementById('statTypes'); if (elT) elT.textContent = types;
+}
+
 quizData.blandet = [
     ...quizData.topscorers,
     ...quizData.traenere,
@@ -750,6 +885,11 @@ quizData.blandet = [
     ...quizData.rekorder,
     ...quizData.quizforliv.filter(q => !q.roundBreak),
 ];
+
+// Sammenslået 'faktamix' — et bedre navn for 'blandet'
+quizData.faktamix = [].concat(
+    quizData.blandet || [], quizData.topscorers || [], quizData.traenere || [], quizData.grupper || [], quizData.knockout || [], quizData.squads || [], quizData.stadion || [], quizData.historie || [], quizData.rekorder || [], (quizData.quizforliv || []).filter(q => !q.roundBreak), quizData.film || [], quizData.musik || [], quizData.handball || [], quizData.basketball || [], quizData.geografi || []
+);
 
 let currentQuizData = [];
 let currentQuestionIndex = 0;
@@ -2560,16 +2700,29 @@ function revealSquadAnswers() {
 const categoryTree = {
     name: 'Forside',
     children: [
-        { name: 'Pubquiz', quizKey: 'blandet' },
-        { name: 'Sport', children: [
-            { name: 'Fodbold', children: [
-                { name: 'VM i herrefodbold', quizKey: 'blandet' },
-                { name: 'Topscorere (VM)', quizKey: 'topscorers' },
-                { name: 'Historie (VM)', quizKey: 'historie' }
+        { name: 'Pubquiz', desc: 'FaktaMix — blandede spørgsmål', quizKey: 'faktamix' },
+        { name: 'Sport', desc: 'Alt indenfor sport', children: [
+            { name: 'Fodbold', desc: 'Lande- og klubfodbold', children: [
+                { name: 'VM (Herre)', desc: 'VM i herrefodbold', quizKey: 'faktamix' },
+                { name: 'Topscorere (VM)', desc: 'Topscorere gennem tiderne', quizKey: 'topscorers' },
+                { name: 'Historie (VM)', desc: 'Turneringshistorie', quizKey: 'historie' },
+                { name: 'Klubfodbold', desc: 'Ligaer og cup', quizKey: '' }
             ]},
-            { name: 'Håndbold', quizKey: '' }
+            { name: 'Håndbold', desc: 'Håndboldspørgsmål', quizKey: '' },
+            { name: 'Basketball', desc: 'Basketball-emner', quizKey: '' }
         ]},
-        { name: 'Underholdning', quizKey: '' }
+        { name: 'Underholdning', desc: 'Film, musik og popkultur', children: [
+            { name: 'Film', desc: 'Filmtitler og trivia', quizKey: '' },
+            { name: 'Musik', desc: 'Artister og sange', quizKey: '' }
+        ]},
+        { name: 'Kultur & Historie', desc: 'Historie og geografi', children: [
+            { name: 'Geografi', desc: 'Lande, byer og steder', quizKey: 'stadion' },
+            { name: 'VM-historie', desc: 'Historiske fakta', quizKey: 'historie' }
+        ]},
+        { name: 'Specialer', desc: 'Spiltyper og lister', children: [
+            { name: 'Tenable / Nævn alle', desc: 'Liste-øvelser', quizKey: '' },
+            { name: 'Startopstilling', desc: 'Gæt startopstillinger', quizKey: '' }
+        ]}
     ]
 };
 
@@ -2593,14 +2746,21 @@ function renderExplorer() {
     crumbs.push(`<strong style="margin-left:8px;">${node.name}</strong>`);
 
     const childrenHtml = (node.children || []).map((child, i) => {
-        return `<button class="category-btn" style="margin:6px;min-width:160px;" onclick="explorerDrill(${i})">${child.name}</button>`;
+        const count = gatherQuestionsFromNode(child).length;
+        const desc = child.desc ? `<div style="font-size:0.9em;color:#666;margin-top:6px;">${child.desc}</div>` : '';
+        return `
+            <div style="display:inline-block;margin:6px;vertical-align:top;">
+                <button class="category-btn" style="min-width:180px;" onclick="explorerDrill(${i})">${child.name}</button>
+                <div style="text-align:center;margin-top:6px;color:#666;font-size:0.9em;">${count} spørgsmål</div>
+                ${desc}
+            </div>`;
     }).join('');
 
     const actionHtml = node.quizKey || (node.children && node.children.length)
         ? `
             <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                <input id="mixedCount" type="number" min="1" placeholder="Antal blandet" style="padding:8px 10px;border-radius:6px;border:1px solid #ddd;width:140px;">
-                <button class="btn btn-primary" onclick="startMixedFromCurrent()">Start Blandet</button>
+                <input id="mixedCount" type="number" min="1" placeholder="Antal spørgsmål" style="padding:8px 10px;border-radius:6px;border:1px solid #ddd;width:140px;">
+                <button class="btn btn-primary" onclick="startMixedFromCurrent()">Start FaktaMix</button>
                 <button class="btn btn-secondary" onclick="startAllFromCurrent()">Start Alle spørgsmål</button>
             </div>` : '';
 
@@ -2622,18 +2782,6 @@ function explorerDrill(index) {
 function explorerBackToRoot() {
     explorerPath = [];
     renderExplorer();
-}
-
-function gatherQuestionsFromNode(node) {
-    let out = [];
-    if (!node) return out;
-    if (node.quizKey && quizData[node.quizKey]) {
-        out = out.concat(quizData[node.quizKey].filter(q => !q.roundBreak));
-    }
-    if (node.children) {
-        node.children.forEach(c => { out = out.concat(gatherQuestionsFromNode(c)); });
-    }
-    return out;
 }
 
 function shuffleArray(a) {
@@ -2673,12 +2821,18 @@ function startAllFromCurrent() {
 
 // Start explorer on load
 document.addEventListener('DOMContentLoaded', () => {
-    try { renderExplorer(); } catch (e) { console.error('Explorer init error', e); }
+    try {
+        // annotate existing data, import a few more samples, then render UI
+        try { autoAnnotateQuestions(); } catch(e){console.warn('autoAnnotate error',e)}
+        try { addMoreQuestions(); } catch(e){console.warn('addMoreQuestions error',e)}
+        try { calculateStats(); } catch(e){console.warn('calculateStats error',e)}
+        renderExplorer();
+    } catch (e) { console.error('Explorer init error', e); }
 });
 
 // Render overview of quiz types
 const overviewTypes = [
-    { title: 'Pubquiz', desc: 'Blandet quiz for alle temaer', action: () => { explorerPath = []; explorerDrill(0); scrollToExplorer(); } },
+    { title: 'Pubquiz', desc: 'FaktaMix — blandede spørgsmål', action: () => { explorerPath = []; explorerDrill(0); scrollToExplorer(); } },
     { title: 'Sport', desc: 'Sportsrelaterede quizzer (fodbold m.m.)', action: () => { explorerPath = []; explorerDrill(1); scrollToExplorer(); } },
     { title: 'Underholdning', desc: 'Film, musik og kultur', action: () => { explorerPath = []; explorerDrill(2); scrollToExplorer(); } },
     { title: 'Speciale - Startopstilling', desc: 'Gæt startopstillingen', action: () => startLineup() },
@@ -2688,12 +2842,17 @@ const overviewTypes = [
 function renderOverview() {
     const grid = document.getElementById('overviewGrid');
     if (!grid) return;
-    grid.innerHTML = overviewTypes.map((t, i) => `
-        <div class="type-card" onclick="overviewTypes[${i}].action()">
-            <h3>${t.title}</h3>
-            <p>${t.desc}</p>
-        </div>
-    `).join('');
+    const tops = categoryTree.children || [];
+    grid.innerHTML = tops.map((c, i) => {
+        const count = gatherQuestionsFromNode(c).length;
+        const subs = (c.children || []).map(s => s.name).slice(0,4).join(', ');
+        return `
+        <div class="type-card" onclick="(function(){ explorerPath=[${i}]; renderExplorer(); scrollToExplorer(); })()">
+            <h3>${c.name} <span style="float:right;color:#667eea;font-weight:700;">${count}</span></h3>
+            <p>${c.desc || ''}</p>
+            <p style="margin-top:8px;color:#888;font-size:0.9em;">Underkategorier: ${subs || '—'}</p>
+        </div>`;
+    }).join('');
 }
 
 function scrollToExplorer() {
@@ -2702,7 +2861,7 @@ function scrollToExplorer() {
 }
 
 // ensure overview renders too
-document.addEventListener('DOMContentLoaded', () => { try { renderOverview(); } catch(e) { console.error(e); } });
+document.addEventListener('DOMContentLoaded', () => { try { renderOverview(); try{ calculateStats(); }catch(e){} } catch(e) { console.error(e); } });
 
 // ── SØG: Enkelt søk over kategorier og alle spørgsmål ──
 function performSearch() {
